@@ -9,8 +9,21 @@
     --color-bg: #FFFFFF;           /* Белый фон для максимального контраста */
     --color-text: #000000;         /* Чисто черный текст для максимальной контрастности */
     --color-text-light: #1A1A1A;   /* Очень темно-серый для высокой контрастности */
+    --color-text-secondary: #3d3d3d; /* Второй уровень: тело / вводные абзацы */
     --color-white: #FFFFFF;
     --color-accent: #5CBD8F;       /* Акцентный яркий зеленый */
+    --font-size-body: 1.125rem;
+    --font-size-body-lg: 1.1875rem;
+    --font-size-lead: 1.25rem;
+    --section-title-sub: 1.25rem;
+    --font-weight-body: 400;
+    --font-weight-lead: 600;
+    --line-height-prose: 1.9;
+}
+
+/* Якоря: фиксированный header */
+section[id] {
+    scroll-margin-top: 96px;
 }
 
 /* Reset and Base Styles */
@@ -385,16 +398,35 @@ body {
     backdrop-filter: blur(10px);
     border-radius: 16px;
     border: 2px solid rgba(0, 0, 0, 0.1);  /* Более контрастная граница */
+    text-align: left; /* не наследовать center от .hero-content — иначе «висят» переносы */
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .hero-feature-item-compact {
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* иконка у верхней строки при длинном тексте */
     gap: 0.75rem;
     font-size: 1.0625rem;          /* 17px - увеличенный размер */
     font-weight: 600;              /* Более жирный шрифт */
     color: var(--color-text);      /* Чистый черный */
-    line-height: 1.7;
+    line-height: 1.6;
+    text-align: left;
+}
+
+.hero-feature-item-compact svg {
+    flex-shrink: 0;
+    margin-top: 0.2em; /* визуально к первой строке, не к центру блока */
+}
+
+.hero-feature-item-compact > span {
+    flex: 1;
+    min-width: 0; /* корректный перенос во flex */
+    text-align: left;
+    text-wrap: pretty; /* меньше «сирот» в конце абзаца (современные браузеры) */
+    hyphens: auto;
+    -webkit-hyphens: auto;
 }
 
 
@@ -404,6 +436,7 @@ body {
     flex-wrap: wrap;
     margin-top: 2rem;
     justify-content: center;
+    align-items: center;
 }
 
 
@@ -472,19 +505,161 @@ section {
 }
 
 .section-subtitle {
-    font-size: 1.25rem;            /* 20px - увеличенный размер */
-    color: var(--color-text);      /* Чистый черный */
-    font-weight: 600;              /* Более жирный шрифт */
+    font-size: var(--section-title-sub);
+    color: var(--color-text);
+    font-weight: var(--font-weight-lead);
     text-align: center;
     margin-bottom: 2.5rem;
     max-width: 700px;
     margin-left: auto;
     margin-right: auto;
-    line-height: 1.8;              /* Увеличенный межстрочный интервал */
-    letter-spacing: 0.01em;        /* Улучшенный межбуквенный интервал */
+    line-height: 1.8;
+    letter-spacing: 0.01em;
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
+}
+
+/* Подзаголовок секции: сильнее от body */
+.section-lead {
+    font-size: var(--font-size-lead);
+    color: var(--color-text);
+    font-weight: var(--font-weight-lead);
+    text-align: center;
+    margin-bottom: 1.25rem;
+    max-width: 44rem;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.75;
+    letter-spacing: 0.01em;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.section-intro {
+    max-width: 50rem;
+    margin: 0 auto 2.75rem;
+    text-align: center;
+}
+
+.section-intro p + p {
+    margin-top: 0.75rem;
+}
+
+.section-intro-tight {
+    margin-bottom: 2.5rem;
+}
+
+.text-body {
+    font-size: var(--font-size-body-lg);
+    line-height: var(--line-height-prose);
+    color: var(--color-text);
+    font-weight: var(--font-weight-body);
+    letter-spacing: 0.01em;
+    margin-bottom: 1rem;
+}
+
+.text-body-secondary {
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-prose);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-body);
+    letter-spacing: 0.01em;
+    margin-bottom: 0;
+}
+
+.service-prose {
+    margin-bottom: 1.5rem;
+}
+
+.service-prose p:last-child {
+    margin-bottom: 0;
+}
+
+.service-card-heading {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 1.75rem;
+}
+
+.service-list-heading {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-text);
+    text-align: center;
+    margin-bottom: 1rem;
+    letter-spacing: 0.02em;
+}
+
+.consultation-title {
+    font-size: 1.75rem;
+    margin-bottom: 1.25rem;
+    text-align: center;
+}
+
+.consultation-text {
+    max-width: 50rem;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.consultation-text + .consultation-text {
+    margin-top: 1rem;
+}
+
+.content-block-title {
+    text-align: center;
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+    color: var(--color-text);
+}
+
+.jobs-subheading {
+    font-size: 1.625rem;
+    color: var(--color-text);
+    margin-bottom: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+
+.jobs-checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2.5rem;
+}
+
+.jobs-checklist li {
+    padding: 0.75rem 0 0.75rem 1.5rem;
+    position: relative;
+    font-size: 1.125rem;
+    color: var(--color-text);
+    line-height: 1.8;
+    letter-spacing: 0.01em;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    transition: color 0.2s ease, padding-left 0.2s ease;
+}
+
+.jobs-checklist li:last-child {
+    border-bottom: none;
+}
+
+.jobs-checklist li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-primary);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.jobs-checklist li:hover {
+    padding-left: 2rem;
+    color: var(--color-primary);
+}
+
+.jobs-closing {
+    margin-bottom: 1rem;
 }
 
 /* Services Section */
@@ -641,9 +816,9 @@ section {
     border-top: 4px solid var(--color-accent);
 }
 
-.service-detail-card .service-title {
+.service-detail-card .service-title.service-card-heading {
     font-size: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 0;
     text-align: center;
     position: relative;
     padding-bottom: 1.5rem;
@@ -652,7 +827,7 @@ section {
     hyphens: auto;
 }
 
-.service-detail-card .service-title::after {
+.service-detail-card .service-title.service-card-heading::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -664,35 +839,140 @@ section {
     border-radius: 2px;
 }
 
-.service-detail-card ul {
-    list-style: none;
-    padding: 0;
-    margin-top: 1.5rem;
+/* Все карточки Leistungen: зазор под зелёной линией под H3 до основного текста */
+.service-card-1 .service-prose,
+.service-card-2 .service-prose,
+.service-card-3 .service-prose,
+.service-card-4 .service-prose {
+    margin-top: 1.75rem;
 }
 
-.service-detail-card ul li {
+/* Краткий обзор: сетка тезисов */
+.service-highlights {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.service-highlights li {
+    margin: 0;
+    padding: 1rem 1rem 1rem 2.25rem;
+    position: relative;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text);
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+    background: linear-gradient(135deg, rgba(213, 242, 224, 0.45) 0%, rgba(255, 255, 255, 0.95) 100%);
+    border: 1px solid rgba(74, 157, 122, 0.2);
+    border-radius: 14px;
+    min-height: 4.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.service-highlights li::before {
+    content: '✓';
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-primary);
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.service-details-accordion {
+    margin-top: 0.5rem;
+    border: 2px solid rgba(74, 157, 122, 0.2);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.85);
+    overflow: hidden;
+}
+
+.service-details-accordion summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 1rem 1.25rem;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    user-select: none;
+    transition: background 0.2s ease;
+}
+
+.service-details-accordion summary::-webkit-details-marker {
+    display: none;
+}
+
+.service-details-accordion summary::after {
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform 0.25s ease;
+    margin-top: -0.2rem;
+}
+
+.service-details-accordion[open] summary::after {
+    transform: rotate(225deg);
+    margin-top: 0.15rem;
+}
+
+.service-details-accordion summary:hover {
+    background: rgba(74, 157, 122, 0.08);
+}
+
+.service-details-accordion summary:focus {
+    outline: none;
+}
+
+.service-details-accordion summary:focus-visible {
+    box-shadow: inset 0 0 0 3px rgba(74, 157, 122, 0.45);
+}
+
+.service-details-accordion .service-list-full {
+    margin-top: 0;
+    padding: 0 1rem 1rem;
+}
+
+.service-list-full {
+    list-style: none;
+    padding: 0;
+}
+
+.service-list-full li {
     padding: 1rem 0;
     padding-left: 2rem;
     position: relative;
-    color: var(--color-text);      /* Чистый черный */
+    color: var(--color-text);
     font-weight: 500;
-    font-size: 1.0625rem;          /* 17px */
-    line-height: 1.8;              /* Увеличенный межстрочный интервал */
+    font-size: 1.0625rem;
+    line-height: 1.8;
     letter-spacing: 0.01em;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.15);  /* Более контрастная граница */
-    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    transition: padding-left 0.2s ease, color 0.2s ease;
 }
 
-.service-detail-card ul li:last-child {
+.service-list-full li:last-child {
     border-bottom: none;
 }
 
-.service-detail-card ul li:hover {
-    padding-left: 2.5rem;
+.service-list-full li:hover {
+    padding-left: 2.35rem;
     color: var(--color-primary);
 }
 
-.service-detail-card ul li::before {
+.service-list-full li::before {
     content: '✓';
     position: absolute;
     left: 0;
@@ -711,9 +991,10 @@ section {
     border: 1px solid rgba(74, 157, 122, 0.15);
 }
 
-.service-consultation-card .service-title {
-    font-size: 2rem;
-    margin-bottom: 2rem;
+.service-consultation-card .consultation-title {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
 }
 
 /* About Section */
@@ -813,22 +1094,6 @@ section {
     transform: scale(1.15);
 }
 
-.about-section-1 .about-icon-wrapper {
-    background: linear-gradient(135deg, rgba(74, 157, 122, 0.1), rgba(107, 191, 138, 0.05));
-}
-
-.about-section-2 .about-icon-wrapper {
-    background: linear-gradient(135deg, rgba(107, 191, 138, 0.1), rgba(143, 212, 168, 0.05));
-}
-
-.about-section-3 .about-icon-wrapper {
-    background: linear-gradient(135deg, rgba(143, 212, 168, 0.1), rgba(184, 230, 201, 0.05));
-}
-
-.about-section-4 .about-icon-wrapper {
-    background: linear-gradient(135deg, rgba(92, 189, 143, 0.1), rgba(74, 157, 122, 0.05));
-}
-
 .about-section:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 48px rgba(74, 157, 122, 0.12);
@@ -866,6 +1131,245 @@ section {
     height: 3px;
     background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
     border-radius: 2px;
+}
+
+/* Über uns: визуально разные шаблоны блоков */
+.about-promise-title {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.about-promise-title::after {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4rem;
+    background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+}
+
+/* Общая шапка: иконка слева, заголовок по центру полосы справа, полоска под заголовком */
+.about-heading-stack {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.about-heading-icon {
+    width: 5.5rem;
+    height: 5.5rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--color-white);
+    border: 2px solid rgba(74, 157, 122, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(74, 157, 122, 0.12);
+}
+
+.about-heading-icon svg {
+    width: 40px;
+    height: 40px;
+}
+
+/* Wer wir sind: мятный градиент как у прежней круглой иконки */
+.about-heading-icon--wer {
+    background: linear-gradient(160deg, var(--color-lightest) 0%, var(--color-white) 55%, #f0fcf4 100%);
+    border: 2px solid rgba(74, 157, 122, 0.22);
+    box-shadow:
+        0 4px 14px rgba(74, 157, 122, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95),
+        inset 0 -1px 0 rgba(74, 157, 122, 0.06);
+}
+
+.about-heading-center {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 0.15rem;
+}
+
+.about-heading-rule {
+    width: 3rem;
+    height: 4px;
+    border-radius: 2px;
+    margin: 0.65rem 0 0;
+    flex-shrink: 0;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+}
+
+.about-heading-title {
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+}
+
+.about-section .service-title.about-heading-title {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.about-section .about-heading-title::after {
+    display: none;
+}
+
+/* 1) Werte: боковой акцент, шапка с иконкой */
+.about-block-wichtig {
+    border: none;
+    border-left: 5px solid var(--color-primary);
+    background: linear-gradient(100deg, rgba(213, 242, 224, 0.55) 0%, var(--color-white) 38%, var(--color-white) 100%);
+    box-shadow: 0 8px 28px rgba(74, 157, 122, 0.1);
+}
+
+.about-description-wichtig p:first-of-type {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #141414;
+    line-height: 1.55;
+    padding-left: 0.5rem;
+    border-left: 3px solid var(--color-lighter);
+}
+
+/* 2) Team: сетка иконка + текст, пунктир */
+.about-block-wer {
+    border: 2px dashed rgba(74, 157, 122, 0.4);
+    background: var(--color-white);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+.about-description-wer p:first-of-type {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+}
+
+/* 3) Ablauf: Schritte / Timeline */
+.about-block-wie {
+    background: var(--color-white);
+    border: 2px solid rgba(0, 0, 0, 0.07);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.about-steps {
+    margin-top: 0.5rem;
+    position: relative;
+}
+
+.about-step {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem 1.25rem;
+    position: relative;
+    padding-bottom: 1.75rem;
+}
+
+.about-step:last-child {
+    padding-bottom: 0;
+}
+
+.about-step:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 1.2rem;
+    top: 2.6rem;
+    bottom: 0.35rem;
+    width: 2px;
+    background: linear-gradient(180deg, var(--color-lighter) 0%, var(--color-lightest) 100%);
+    border-radius: 1px;
+}
+
+.about-step-marker {
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
+    background: linear-gradient(145deg, var(--color-primary), var(--color-accent));
+    color: var(--color-white);
+    font-size: 0.95rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    box-shadow: 0 2px 10px rgba(74, 157, 122, 0.35);
+    position: relative;
+    z-index: 1;
+}
+
+.about-step-text {
+    font-size: 1.1875rem;
+    line-height: 1.85;
+    color: var(--color-text);
+    font-weight: 500;
+    margin: 0;
+    padding-top: 0.2rem;
+    letter-spacing: 0.01em;
+}
+
+/* 4) Versprechen: zentriert, stärkere Leseführung */
+.about-block-versprechen {
+    border: 1px solid rgba(74, 157, 122, 0.25);
+    box-shadow: 0 10px 36px rgba(74, 157, 122, 0.12);
+    background: linear-gradient(165deg, var(--color-lightest) 0%, #eefaf3 40%, var(--color-lighter) 100%);
+}
+
+.about-versprechen-inner {
+    max-width: 40rem;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about-icon-versprechen {
+    max-width: 5rem;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 1.25rem;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(74, 157, 122, 0.2);
+}
+
+.about-description-versprechen {
+    text-align: center;
+}
+
+.about-promise-lead {
+    font-size: 1.3rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #123a2a;
+    margin-bottom: 1.25rem !important;
+}
+
+.about-section.about-block-versprechen:hover {
+    box-shadow: 0 12px 40px rgba(74, 157, 122, 0.16);
+}
+
+@media (max-width: 640px) {
+    .about-description-wichtig p:first-of-type {
+        border-left: none;
+        padding-left: 0;
+    }
+
+    .about-heading-stack {
+        gap: 0.85rem 1rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .about-heading-icon {
+        width: 4.75rem;
+        height: 4.75rem;
+    }
+
+    .about-heading-icon svg {
+        width: 34px;
+        height: 34px;
+    }
 }
 
 .contact-person {
@@ -1142,7 +1646,7 @@ a:hover {
     text-decoration-thickness: 3px;
 }
 
-/* Улучшенная читаемость для параграфов */
+/* Улучшенная читаемость для параграфов (утилиты .text-body* переопределяют при необходимости) */
 p {
     font-size: 1.125rem;            /* 18px */
     line-height: 1.9;
@@ -1151,9 +1655,9 @@ p {
     margin-bottom: 1rem;
 }
 
-/* Улучшенная контрастность для заголовков h3 в сервисах */
-.service-detail-card h3 {
-    color: #000000 !important;      /* Принудительно черный */
+/* Заголовки карточек услуг */
+.service-detail-card .service-title {
+    color: var(--color-text);
 }
 
 /* Footer */
@@ -1211,6 +1715,12 @@ p {
 }
 
 /* Responsive Design */
+@media (max-width: 900px) {
+    .service-highlights {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 968px) {
     .nav-menu {
         position: fixed;

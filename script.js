@@ -17,7 +17,8 @@ const translations = {
             description4: 'Rufen Sie uns gerne an!',
             description5: 'Wir informieren Sie kostenfrei und unverbindlich über alle Fragen rund um die häusliche Pflege.',
             description6: 'Auf Wunsch kommen wir auch zu Ihnen nach Hause, um Sie persönlich zu beraten.',
-            contactButton: 'Kontakt aufnehmen'
+            contactButton: 'Kontakt aufnehmen',
+            servicesButton: 'Unsere Leistungen'
         },
         contactInfo: {
             title: 'Für Sie erreichbar',
@@ -29,6 +30,8 @@ const translations = {
             subtitle: 'Individuelle häusliche Pflege schafft die Grundlage für mehr Lebensqualität und Selbstständigkeit – auch im Alter.',
             description: 'Wir kommen zu Ihnen und bieten unsere Leistungen dort an, wo Sie zuhause sind.',
             description2: 'Durch unsere liebevolle und fachgerechte Betreuung kann ein Krankenhausaufenthalt oft verkürzt oder sogar vermieden werden.',
+            accordionLabel: 'Vollständige Leistungsliste anzeigen',
+            highlightsA11y: 'Kurzüberblick Leistungen',
             behandlungspflege: {
                 title: 'Behandlungspflege',
                 description: 'Die Behandlungspflege nach SGB V umfasst alle ärztlich verordneten medizinischen Maßnahmen, die der Sicherung und Unterstützung der ärztlichen Behandlung dienen.',
@@ -185,7 +188,8 @@ const translations = {
             description4: 'Позвоните нам!',
             description5: 'Мы бесплатно и без обязательств информируем вас по всем вопросам домашнего ухода.',
             description6: 'По желанию мы также приедем к вам домой, чтобы проконсультировать лично.',
-            contactButton: 'Связаться'
+            contactButton: 'Связаться',
+            servicesButton: 'Наши услуги'
         },
         contactInfo: {
             title: 'Как с нами связаться',
@@ -197,6 +201,8 @@ const translations = {
             subtitle: 'Индивидуальный домашний уход создает основу для повышения качества жизни и самостоятельности - даже в пожилом возрасте.',
             description: 'Мы приезжаем к вам и предлагаем наши услуги там, где вы дома.',
             description2: 'Благодаря нашей заботливой и профессиональной поддержке пребывание в больнице часто можно сократить или даже избежать.',
+            accordionLabel: 'Показать полный перечень услуг',
+            highlightsA11y: 'Краткий обзор услуг',
             behandlungspflege: {
                 title: 'Лечебный уход',
                 description: 'Лечебный уход согласно SGB V включает все назначенные врачом медицинские меры, которые служат обеспечению и поддержке врачебного лечения.',
@@ -403,6 +409,45 @@ function closeLanguageDropdown() {
     }
 }
 
+function fillDynamicLists() {
+    const t = translations[currentLang];
+    if (!t) return;
+
+    const serviceKeys = ['behandlungspflege', 'grundpflege', 'hauswirtschaft', 'wundheilung'];
+    serviceKeys.forEach((key) => {
+        const svc = t.services[key];
+        if (!svc || !Array.isArray(svc.items)) return;
+        const card = document.querySelector(`[data-service="${key}"]`);
+        if (!card) return;
+        const highlights = card.querySelector('.service-highlights');
+        const full = card.querySelector('.service-list-full');
+        const details = card.querySelector('.service-details-accordion');
+        const preview = svc.items.slice(0, 3);
+        if (highlights) {
+            highlights.innerHTML = preview.map((item) => `<li>${item}</li>`).join('');
+        }
+        if (full) {
+            full.innerHTML = svc.items.map((item) => `<li>${item}</li>`).join('');
+        }
+        if (details) {
+            details.style.display = svc.items.length > 3 ? '' : 'none';
+        }
+    });
+
+    document.querySelectorAll('[data-service-highlights]').forEach((el) => {
+        el.setAttribute('aria-label', t.services.highlightsA11y);
+    });
+
+    const mit = document.querySelector('[data-jobs-list="mitbringen"]');
+    const biet = document.querySelector('[data-jobs-list="bieten"]');
+    if (mit && t.jobs.mitbringen.items) {
+        mit.innerHTML = t.jobs.mitbringen.items.map((item) => `<li>${item}</li>`).join('');
+    }
+    if (biet && t.jobs.bieten.items) {
+        biet.innerHTML = t.jobs.bieten.items.map((item) => `<li>${item}</li>`).join('');
+    }
+}
+
 function updatePageContent() {
     const t = translations[currentLang];
     if (!t) return;
@@ -424,6 +469,7 @@ function updatePageContent() {
     document.querySelectorAll('[data-translate="hero.description5"]').forEach(el => el.textContent = t.hero.description5);
     document.querySelectorAll('[data-translate="hero.description6"]').forEach(el => el.textContent = t.hero.description6);
     document.querySelectorAll('[data-translate="hero.contactButton"]').forEach(el => el.textContent = t.hero.contactButton);
+    document.querySelectorAll('[data-translate="hero.servicesButton"]').forEach(el => el.textContent = t.hero.servicesButton);
 
     // Update contact info
     document.querySelectorAll('[data-translate="contactInfo.title"]').forEach(el => el.textContent = t.contactInfo.title);
@@ -461,6 +507,7 @@ function updatePageContent() {
     document.querySelectorAll('[data-translate="services.consultation.title"]').forEach(el => el.textContent = t.services.consultation.title);
     document.querySelectorAll('[data-translate="services.consultation.description"]').forEach(el => el.textContent = t.services.consultation.description);
     document.querySelectorAll('[data-translate="services.consultation.description2"]').forEach(el => el.textContent = t.services.consultation.description2);
+    document.querySelectorAll('[data-translate="services.accordionLabel"]').forEach(el => el.textContent = t.services.accordionLabel);
 
     // Update about section
     document.querySelectorAll('[data-translate="about.title"]').forEach(el => el.textContent = t.about.title);
@@ -511,6 +558,8 @@ function updatePageContent() {
     document.querySelectorAll('[data-translate="footer.privacy"]').forEach(el => el.textContent = t.footer.privacy);
     document.querySelectorAll('[data-translate="footer.impressum"]').forEach(el => el.textContent = t.footer.impressum);
     document.querySelectorAll('[data-translate="footer.copyright"]').forEach(el => el.textContent = t.footer.copyright);
+
+    fillDynamicLists();
 }
 
 // Initialize language on page load
@@ -556,30 +605,33 @@ const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 const navLinks = document.querySelectorAll('.nav-link');
 
-hamburger.addEventListener('click', () => {
-    navMenu.classList.toggle('active');
+if (hamburger && navMenu) {
+    hamburger.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
 
-    // Animate hamburger
-    const spans = hamburger.querySelectorAll('span');
-    if (navMenu.classList.contains('active')) {
-        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-        spans[1].style.opacity = '0';
-        spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
-    } else {
-        spans[0].style.transform = 'none';
-        spans[1].style.opacity = '1';
-        spans[2].style.transform = 'none';
-    }
-});
+        const spans = hamburger.querySelectorAll('span');
+        if (navMenu.classList.contains('active')) {
+            spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+            spans[1].style.opacity = '0';
+            spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+        } else {
+            spans[0].style.transform = 'none';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = 'none';
+        }
+    });
+}
 
 // Close mobile menu when clicking on a link
 navLinks.forEach(link => {
     link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
-        const spans = hamburger.querySelectorAll('span');
-        spans[0].style.transform = 'none';
-        spans[1].style.opacity = '1';
-        spans[2].style.transform = 'none';
+        if (navMenu) navMenu.classList.remove('active');
+        if (hamburger) {
+            const spans = hamburger.querySelectorAll('span');
+            spans[0].style.transform = 'none';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = 'none';
+        }
     });
 });
 
